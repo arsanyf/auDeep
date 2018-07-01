@@ -93,7 +93,9 @@ class BipParser(LoggingMixin, Parser):
             raise IOError("unable to parse Bip dataset at {}".format(self._basedir))
         if self._cv_setup_cache is None:
             skf = StratifiedKFold(n_splits=self.num_folds, shuffle=True)
-            self._cv_setup_cache = [self._metadata_cache.iloc[[train]] for train, test in skf.split(a['WaveFilename'], a['IsManic'])]
+            self._cv_setup_cache = []
+            for train, test in skf.split(a['WaveFilename'], a['IsManic']):
+                self._cv_setup_cache.append(self._metadata_cache.iloc[[train]])
 
         return self._cv_setup_cache
 

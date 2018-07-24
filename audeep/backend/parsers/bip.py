@@ -26,10 +26,10 @@ from audeep.backend.data.data_set import Split
 from audeep.backend.log import LoggingMixin
 from audeep.backend.parsers.base import Parser, _InstanceMetadata
 
-_LABEL_MAP = {
-    "0": 0,
-    "1": 1
-}
+_LABEL_MAP = [
+    0,
+    1
+]
 
 
 class BipParser(LoggingMixin, Parser):
@@ -94,8 +94,9 @@ class BipParser(LoggingMixin, Parser):
         if self._cv_setup_cache is None:
             skf = StratifiedKFold(n_splits=self.num_folds, shuffle=True)
             self._cv_setup_cache = []
+            a = self._metadata_cache
             for train, test in skf.split(a['WaveFilename'], a['IsManic']):
-                self._cv_setup_cache.append(self._metadata_cache.iloc[[train]])
+                self._cv_setup_cache.append(self._metadata_cache.iloc[train]['WaveFilename'].values)
 
         return self._cv_setup_cache
 
@@ -208,7 +209,7 @@ class BipParser(LoggingMixin, Parser):
             cv_folds = []
 
             for fold_metadata in cv_setup:
-                cv_folds.append(Split.TRAIN if filename in fold_metadata.iloc[:, 0].values else Split.VALID)
+                cv_folds.append(Split.TRAIN if filename in fold_metadata else Split.VALID)
 
             instance_metadata = _InstanceMetadata(path=self._basedir / filename,
                                                   filename=str(Path(filename).name),

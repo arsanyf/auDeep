@@ -26,10 +26,10 @@ from audeep.backend.data.data_set import Split
 from audeep.backend.log import LoggingMixin
 from audeep.backend.parsers.base import Parser, _InstanceMetadata
 
-_LABEL_MAP = [
-    0,
-    1
-]
+_LABEL_MAP = {
+    0: 0,
+    1: 1
+}
 
 
 class BipParser(LoggingMixin, Parser):

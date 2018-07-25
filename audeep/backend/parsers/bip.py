@@ -27,8 +27,8 @@ from audeep.backend.log import LoggingMixin
 from audeep.backend.parsers.base import Parser, _InstanceMetadata
 
 _LABEL_MAP = {
-    0: 0,
-    1: 1
+    "0": 0,
+    "1": 1
 }
 
 
@@ -201,7 +201,7 @@ class BipParser(LoggingMixin, Parser):
 
         for index, row in metadata.iterrows():
             filename = row['WaveFilename']
-            label_nominal = row['IsManic']
+            label_nominal = str(row['IsManic'])
 
             if label_nominal not in _LABEL_MAP:
                 raise IOError("invalid label for Bip data: {}".format(label_nominal))
